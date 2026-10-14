@@ -1,0 +1,39 @@
+# =========================================================
+# CIFAR10 图像分类 —— 自写 CNN 基线配置
+# 使用方式: python scripts/train.py --config confits/default.yaml
+# =========================================================
+
+experiment:
+  name: custom_cnn_baseline   # 实验名称（用于输出目录命名）
+  seed: 42                    # 随机种子，保证可复现
+  device: auto                # auto / cuda / cpu
+
+data:
+  root: data                  # CIFAR10 数据下载与缓存目录
+  batch_size: 128
+  num_workers: 2              # Windows 上若出现多进程问题可改为 0
+  val_ratio: 0.1              # 从训练集划分 10% 作为验证集
+
+model:
+  name: custom_cnn            # 模型名称: custom_cnn / resnet18
+  num_classes: 10
+  base_channels: 32           # 第一层卷积通道数，逐层翻倍
+
+loss:
+  name: cross_entropy         # cross_entropy / label_smoothing
+  # smoothing: 0.1            # label_smoothing 时的平滑系数
+
+optimizer:
+  name: sgd
+  lr: 0.01
+  momentum: 0.9
+  weight_decay: 0.0005
+
+scheduler:
+  name: cosine                # cosine / step / none
+  T_max: 50                   # cosine 调度周期
+
+train:
+  epochs: 50
+  log_interval: 50            # 每多少个 batch 打印一次日志
+  save_best: true             # 是否保存验证集最优模型

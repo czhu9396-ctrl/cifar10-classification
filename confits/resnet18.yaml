@@ -1,0 +1,38 @@
+# =========================================================
+# CIFAR10 图像分类 —— 公开模型 ResNet18 对比配置
+# 使用方式: python scripts/train.py --config confits/resnet18.yaml
+# =========================================================
+
+experiment:
+  name: resnet18_baseline
+  seed: 42
+  device: auto
+
+data:
+  root: data
+  batch_size: 128
+  num_workers: 2
+  val_ratio: 0.1
+
+model:
+  name: resnet18
+  num_classes: 10
+  pretrained: true           # 是否加载 ImageNet 预训练权重
+
+loss:
+  name: cross_entropy
+
+optimizer:
+  name: sgd
+  lr: 0.01
+  momentum: 0.9
+  weight_decay: 0.0005
+
+scheduler:
+  name: cosine
+  T_max: 30
+
+train:
+  epochs: 30
+  log_interval: 50
+  save_best: true
